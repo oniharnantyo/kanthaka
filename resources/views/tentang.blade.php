@@ -7,6 +7,7 @@
                 <div class="row mt-4">
                     <div class="col-12 text-center">
                         <h2 class="section-title mb-3">Apa itu Vidyasena?</h2>
+                        <h3 class="section-title mb-3">owen was here</h3>
                     </div>
                 </div>
                 <div class="row">

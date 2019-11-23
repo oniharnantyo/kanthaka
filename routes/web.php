@@ -47,4 +47,3 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function ($rou
   Route::get('/banner/{id}', 'portal\BannerController@detail');
   Route::post('/banner/{id}', 'portal\BannerController@update');
 });
-
