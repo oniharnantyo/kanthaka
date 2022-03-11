@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('home.layout.main')
 @section('title','Vidyasena Vihara Vidyaloka')
 @section('content')
   <div class="site-blocks-cover" id="home">

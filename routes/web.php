@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Portal\AuthController;
+use App\Http\Controllers\Portal\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +17,13 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [HomeController::class, 'index']);
+
+Route::prefix('portal')->group(function () {
+  Route::get('/', function () {
+    return redirect('/portal/dashboard');
+  });
+
+  Route::get('/login',  [AuthController::class, 'login']);
+
+  Route::get('/dashboard', [DashboardController::class, 'index']);
+});
