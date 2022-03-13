@@ -23,7 +23,11 @@ Route::prefix('portal')->group(function () {
     return redirect('/portal/dashboard');
   });
 
-  Route::get('/login',  [AuthController::class, 'login']);
+  Route::get('/login',  [AuthController::class, 'login'])->middleware('guest');
+  Route::post('/login',  [AuthController::class, 'postlogin']);
+  Route::get('/logout',  [AuthController::class, 'logout']);
 
-  Route::get('/dashboard', [DashboardController::class, 'index']);
+  Route::middleware(['auth:portal'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+  });
 });

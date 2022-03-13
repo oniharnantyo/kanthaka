@@ -14,8 +14,10 @@ class HomeController extends Controller
     $this->blogRepository = $blogRepository;
   }
 
-  public function index() {
+  public function index()
+  {
     $blogs = $this->blogRepository->FindAll();
+    dd($blogs);
     foreach ($blogs as $blog) {
       $blog->content = htmlspecialchars_decode($blog->content);
     }
@@ -23,21 +25,23 @@ class HomeController extends Controller
     // $banners = Banner::all()->take(5);
     // return view('index', compact('blogs', 'banners'));
 
-      $banners = array();
+    $banners = array();
 
     return view('home.index', compact('blogs', 'banners'));
   }
 
-  public function tentangPage() {
+  public function tentangPage()
+  {
     return view('home.tentang');
   }
 
-  public function programKerjaPage() {
+  public function programKerjaPage()
+  {
     return view('home.program-kerja');
   }
 
-  public function kontakPage() {
+  public function kontakPage()
+  {
     return view('home.kontak');
   }
-
 }
