@@ -19,6 +19,7 @@ use App\Http\Controllers\Portal\UserController;
 
 Route::get('/', [HomeController::class, 'index']);
 
+
 Route::prefix('portal')->group(function () {
   Route::get('/', function () {
     return redirect('/portal/dashboard');
