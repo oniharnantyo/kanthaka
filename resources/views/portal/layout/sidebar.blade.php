@@ -3,22 +3,28 @@
         <div class="sidebar-brand-text mx-3">Vidyasena</div>
     </a>
     <hr class="sidebar-divider my-0">
-    <li class="nav-item {{ $data['page']  === "dashboard" ? "active" : "" }}">
-        <a class="nav-link" href="/admin/dashboard">
+    <li class="nav-item {{ $data['page']  === " dashboard" ? "active" : "" }}">
+        <a class="nav-link" href="/portal/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
     <hr class="sidebar-divider">
-    <li class="nav-item {{ $data['page']  === "blogs" ? "active" : "" }}">
-        <a class="nav-link" href="/admin/blog">
+    <li class="nav-item {{ $data['page']  === " blogs" ? "active" : "" }}">
+        <a class="nav-link" href="/portal/blogs">
             <i class="fas fa-blog"></i>
             <span>Blog</span></a>
     </li>
 
-    <li class="nav-item {{ $data['page']  === "banners" ? "active" : "" }}">
-        <a class="nav-link" href="/admin/banner">
+    <li class="nav-item {{ $data['page']  === " banners" ? "active" : "" }}">
+        <a class="nav-link" href="/portal/banners">
             <i class="fas fa-bullhorn"></i>
             <span>Banner</span></a>
+    </li>
+
+    <li class="nav-item {{ $data['page']  === " users" ? "active" : "" }}">
+        <a class="nav-link" href="/portal/users">
+            <i class="fas fa-users"></i>
+            <span>Users</span></a>
     </li>
 
     <hr class="sidebar-divider d-none d-md-block">

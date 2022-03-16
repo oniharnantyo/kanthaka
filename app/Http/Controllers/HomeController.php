@@ -17,7 +17,6 @@ class HomeController extends Controller
   public function index()
   {
     $blogs = $this->blogRepository->FindAll();
-    dd($blogs);
     foreach ($blogs as $blog) {
       $blog->content = htmlspecialchars_decode($blog->content);
     }

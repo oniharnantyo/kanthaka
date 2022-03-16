@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Portal\AuthController;
 use App\Http\Controllers\Portal\DashboardController;
+use App\Http\Controllers\Portal\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +30,10 @@ Route::prefix('portal')->group(function () {
 
   Route::middleware(['auth:portal'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
+
+    Route::prefix('users')->group(function () {
+      Route::get('/', [UserController::class, 'index']);
+      Route::get('/datatables', [UserController::class, 'datatables']);
+    });
   });
 });
