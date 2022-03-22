@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Portal\AuthController;
 use App\Http\Controllers\Portal\UserController;
 use App\Repositories\Persistence\BlogRepository;
 use App\Repositories\Persistence\UserRepository;
@@ -25,6 +26,10 @@ class ControllerServiceProvider extends ServiceProvider
 
         $this->app->bind(UserController::class, function ($app) {
             return new UserController(new UserRepository(new User()));
+        });
+
+        $this->app->bind(AuthController::class, function ($app) {
+            return new AuthController(new UserRepository(new User()));
         });
     }
 

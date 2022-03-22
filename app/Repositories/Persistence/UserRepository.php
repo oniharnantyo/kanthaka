@@ -42,6 +42,11 @@ class UserRepository implements UserRepositoryInterface
     return $this->model->find($id);
   }
 
+  public function getByEmail($email)
+  {
+    return $this->model->where('email', $email)->firstOrFail();
+  }
+
   public function create($data)
   {
     $this->model->create($data);
