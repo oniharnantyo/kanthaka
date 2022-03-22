@@ -33,8 +33,10 @@ Route::prefix('portal')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
     Route::prefix('users')->group(function () {
-      Route::get('/', [UserController::class, 'index']);
+      Route::get('/', [UserController::class, 'index'])->name('portal.users.list');
       Route::get('/datatables', [UserController::class, 'datatables']);
+      Route::get('/{id}', [UserController::class, 'show'])->name('portal.users.detail');
+      Route::post('/{id}', [UserController::class, 'update']);
     });
   });
 });

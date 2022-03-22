@@ -2,7 +2,8 @@
 @section('title', 'Login')
 
 @section('body')
-  <body class="bg-gradient-primary">
+
+<body class="bg-gradient-primary">
   <div class="container">
     <!-- Outer Row -->
     <div class="row justify-content-center">
@@ -19,27 +20,31 @@
                   <form class="user" method="POST">
                     @csrf
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user @if ($errors->has('email')) is-invalid @endif" id="email" name = "email" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="email"
+                        class="form-control form-control-user @if ($errors->has('email')) is-invalid @endif" id="email"
+                        name="email" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                       @if ($errors->has('email'))
-                        <div class="invalid-feedback">
-                          {{ $errors->first('email') }}
-                        </div>
+                      <div class="invalid-feedback">
+                        {{ $errors->first('email') }}
+                      </div>
                       @endif
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user @if ($errors->has('password')) is-invalid @endif" id="password" name = "password" placeholder="Password">
+                      <input type="password"
+                        class="form-control form-control-user @if ($errors->has('password')) is-invalid @endif"
+                        id="password" name="password" placeholder="Password">
                       @if ($errors->has('password'))
-                        <div class="invalid-feedback">
-                          {{ $errors->first('password') }}
-                        </div>
+                      <div class="invalid-feedback">
+                        {{ $errors->first('password') }}
+                      </div>
                       @endif
                     </div>
                     @if($errors->has('login'))
-                      <div class="alert alert-danger">
-                        @foreach($errors->all() as $error)
-                          <span>{{ $error }}</span>
-                        @endforeach
-                      </div>
+                    <div class="alert alert-danger">
+                      @foreach($errors->all() as $error)
+                      <span>{{ $error }}</span>
+                      @endforeach
+                    </div>
                     @endif
                     <button class="btn btn-primary btn-user btn-block">
                       Login
@@ -60,5 +65,5 @@
       </div>
     </div>
   </div>
-  </body>
+</body>
 @endsection

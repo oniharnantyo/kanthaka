@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Uuid;
 use Yajra\DataTables\Datatables;
 
 class UserController extends Controller
@@ -36,6 +37,7 @@ class UserController extends Controller
   public function datatables(Request $request)
   {
     return Datatables::of($this->userRepo->fetchDatatables())
+      ->addIndexColumn()
       ->make(true);
   }
 
@@ -63,14 +65,13 @@ class UserController extends Controller
 
   public function show($id)
   {
-    $user = $this->userRepo->getByID($id);
-    return view('portal.users.detail', compact('user'));
-  }
+    $data  = array(
+      "page" => "users",
+      "title" => "Users"
+    );
 
-  public function edit($id)
-  {
     $user = $this->userRepo->getByID($id);
-    return view('portal.users.edit', compact('user'));
+    return view('portal.users.detail', compact('data', 'user'));
   }
 
   public function update(Request $request, $id)
@@ -81,21 +82,26 @@ class UserController extends Controller
       'password' => 'same:confirm-password',
     ]);
 
-    $input = $request->all();
+    $id = Uuid::fromString($id);
+
+    $input = [
+      'name' => $request->name,
+      'email' => $request->email,
+      'password' => $request->password,
+    ];
+
     if (!empty($input['password'])) {
       $input['password'] = Hash::make($input['password']);
     } else {
       $input = Arr::except($input, array('password'));
     }
 
-    $user = $this->userRepo->getByID($id);
-    $this->userRepo->update($user->id, $user);
+    $this->userRepo->update($id, $input);
 
-    return redirect()->route('portal.users.list')
-      ->with($this->success("User updated successfully", $user));
+    return redirect()->route('portal.users.detail', $id);
   }
 
-  public function destroy($id)
+  public function delete($id)
   {
     $this->userRepo->delete($id);
     return redirect()->route('portal.users.list')
