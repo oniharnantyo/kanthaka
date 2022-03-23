@@ -35,8 +35,11 @@ Route::prefix('portal')->group(function () {
     Route::prefix('users')->group(function () {
       Route::get('/', [UserController::class, 'index'])->name('portal.users.list');
       Route::get('/datatables', [UserController::class, 'datatables']);
+      Route::get('/create', [UserController::class, 'create'])->name('portal.users.create');
+      Route::post('/create', [UserController::class, 'store'])->name('portal.users.create.post');
       Route::get('/{id}', [UserController::class, 'show'])->name('portal.users.detail');
-      Route::post('/{id}', [UserController::class, 'update']);
+      Route::post('/{id}', [UserController::class, 'update'])->name('portal.users.update');
+      Route::delete('/{id}', [UserController::class, 'delete'])->name('portal.users.delete');
     });
   });
 });

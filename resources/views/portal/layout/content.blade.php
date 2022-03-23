@@ -1,52 +1,45 @@
 @extends('portal.layout.main')
+
 <body id="page-top">
   <div id="wrapper">
-  @include('portal.layout.sidebar')
-  <!-- Content Wrapper -->
+    @include('portal.layout.sidebar')
+    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
-      @include('portal.layout.navbar')
+        @include('portal.layout.navbar')
 
-      <div class="container-fluid">
-        @if ($message = Session::get('success'))
+        <div class="container-fluid">
+          @if ($message = Session::get('success'))
           <div class="alert alert-success">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
           </div>
-        @endif
+          @endif
 
 
-        @if ($message = Session::get('error'))
+          @if ($message = Session::get('error'))
           <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
           </div>
-        @endif
+          @endif
 
 
-        @if ($message = Session::get('warning'))
+          @if ($message = Session::get('warning'))
           <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
           </div>
-        @endif
+          @endif
 
 
-        @if ($message = Session::get('info'))
+          @if ($message = Session::get('info'))
           <div class="alert alert-info">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{ $message }}</strong>
           </div>
-        @endif
-
-
-        @if ($errors->any())
-          <div class="alert alert-danger">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            {{ $errors }}
-          </div>
-        @endif
-      </div>
+          @endif
+        </div>
 
         @yield('content')
       </div>
@@ -68,7 +61,8 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -98,5 +92,5 @@
 
   <!-- Custom scripts for all pages-->
   <script src={{asset("js/sb-admin-2.min.js")}}></script>
-@yield('script')
+  @yield('script')
 </body>

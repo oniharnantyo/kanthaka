@@ -17,6 +17,7 @@
       </div>
       <div class="table-responsive">
         <table class="table table-bordered" id="users-list" width="100%" cellspacing="0">
+          <meta name="csrf-token" content="{{ csrf_token() }}">
           <thead>
             <tr>
               <th style="width: 20%">Created Date</th>
@@ -39,6 +40,7 @@
 <script src={{ asset("vendor/datatables/dataTables.bootstrap4.min.js") }}></script>
 <script src={{ asset("js/bootbox.min.js") }}></script>
 <script src={{ asset("js/flash.min.js") }}></script>
+<script src={{ asset("js/moment.min.js") }}></script>
 
 <!-- Page level custom scripts -->
 <script>
@@ -58,6 +60,12 @@
         ],
         columnDefs: [
           {
+            targets : 0,
+            render: function (data) {
+              return moment(data).local().format('YYYY-MM-DD HH:mm:ss');
+            }
+          },
+          {
             targets : 1,
             render: function (data) {
                 return '<a href="/portal/users/' + data + '">' + data + '</a>';
@@ -75,6 +83,7 @@
 
   $(document).on('click', '.btn-delete', function(e){
     var id = $(this).attr("data-id");
+    var token = $("meta[name='csrf-token']").attr("content");
 
     bootbox.confirm({
       message: "Are you sure to delete the user?",
@@ -91,17 +100,20 @@
       callback: function (result) {
         if (result) {
           $.ajax({
-            url: 'portal/users/delete'+id,
+            url: 'users/'+id,
             type: 'DELETE',
+            data: {
+              "_token": token,
+            },
             success: function(data, status, xhr) {
-              flash('User deleted successfully',{
+              flash(data.success,{
                 'autohide' : true,
                 'bgColor' : '#5E9DE6'
               });
+              $('#users-list').DataTable().ajax.reload();
             }
           });
         }
-        console.log('This was logged in the callback: ' + result);
       }
     });
   });

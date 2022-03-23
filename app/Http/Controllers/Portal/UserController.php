@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
 use App\Traits\RespondsWithHttpStatus;
+use Domain\User\User;
 use Domain\User\UserRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
 use Yajra\DataTables\Datatables;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -23,13 +25,14 @@ class UserController extends Controller
     $this->userRepo = $userRepo;
   }
 
+  private $data  = array(
+    "page" => "users",
+    "title" => "Users"
+  );
+
   public function index(Request $request)
   {
-    $data  = array(
-      "page" => "users",
-      "title" => "Users"
-    );
-
+    $data  = $this->data;
     return view('portal.users.list', compact('data'));
   }
 
@@ -43,7 +46,8 @@ class UserController extends Controller
 
   public function create()
   {
-    return view('portal.users.create');
+    $data  = $this->data;
+    return view('portal.users.create', compact('data'));
   }
 
   public function store(Request $request)
@@ -57,18 +61,24 @@ class UserController extends Controller
     $input = $request->all();
     $input['password'] = Hash::make($input['password']);
 
-    $user = $this->userRepo->create($input);
+    $user = new User();
+    $user->id = Str::uuid()->toString();
+    $user->name = $input['name'];
+    $user->email = $input['email'];
+    $user->password = Hash::make($input['password']);
 
-    return redirect()->route('portal.user.list')
-      ->with($this->success("User created successfully", $user));
+    $user = $this->userRepo->create($user);
+
+    return redirect()->route('portal.users.list')
+      ->with([
+        'result' => 'User created successfully',
+        'user' => $user,
+      ]);
   }
 
   public function show($id)
   {
-    $data  = array(
-      "page" => "users",
-      "title" => "Users"
-    );
+    $data  = $this->data;
 
     $user = $this->userRepo->getByID($id);
     return view('portal.users.detail', compact('data', 'user'));
@@ -82,29 +92,26 @@ class UserController extends Controller
       'password' => 'same:confirm-password',
     ]);
 
-    $id = Uuid::fromString($id);
-
-    $input = [
-      'name' => $request->name,
-      'email' => $request->email,
-      'password' => $request->password,
-    ];
+    $user = new User();
+    $user->id = Uuid::fromString($id);;
+    $user->name = $request->name;
+    $user->email = $request->email;
 
     if (!empty($input['password'])) {
-      $input['password'] = Hash::make($input['password']);
-    } else {
-      $input = Arr::except($input, array('password'));
+      $user->password = Hash::make($request->password);
     }
 
-    $this->userRepo->update($id, $input);
+    $this->userRepo->update($user);
 
-    return redirect()->route('portal.users.detail', $id);
+    return redirect()->route('portal.users.detail', $id)
+      ->with(['result' => 'User updated successfully']);
   }
 
   public function delete($id)
   {
     $this->userRepo->delete($id);
-    return redirect()->route('portal.users.list')
-      ->with($this->success("User deleted successfully"));
+    return response()->json([
+      'success' => 'Record deleted successfully!'
+    ]);
   }
 }
