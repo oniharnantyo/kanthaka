@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Persistence;
 
-use Domain\Role\PermissionRepositoryInterface;
+use Domain\Permission\PermissionRepositoryInterface;
 use Spatie\Permission\Models\Permission;
 
 class PermissionRepository implements PermissionRepositoryInterface
@@ -19,11 +19,11 @@ class PermissionRepository implements PermissionRepositoryInterface
     return $this->model->get();
   }
 
-  public function getPermissionByID($id)
+  public function getByRoleID($roleID)
   {
     return $this->model
       ->join('role_has_permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
-      ->where("role_has_permissions.role_id", $id)
+      ->where("role_has_permissions.role_id", $roleID)
       ->get();
   }
 }

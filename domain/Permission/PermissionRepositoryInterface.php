@@ -1,9 +1,9 @@
 <?php
 
-namespace Domain\Role;
+namespace Domain\Permission;
 
 interface PermissionRepositoryInterface
 {
   public function fetchAll();
-  public function getPermissionByID($id);
+  public function getByRoleID($roleID);
 }

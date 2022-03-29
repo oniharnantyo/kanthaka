@@ -8,7 +8,6 @@ use Domain\User\User;
 use Domain\User\UserRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
 use Yajra\DataTables\Datatables;
@@ -59,7 +58,6 @@ class UserController extends Controller
     ]);
 
     $input = $request->all();
-    $input['password'] = Hash::make($input['password']);
 
     $user = new User();
     $user->id = Str::uuid()->toString();

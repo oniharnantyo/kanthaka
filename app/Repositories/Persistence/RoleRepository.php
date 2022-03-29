@@ -16,7 +16,7 @@ class RoleRepository implements RoleRepositoryInterface
 
   public function fetchDatatables()
   {
-    return $this->model->orderByDesc('id');
+    return $this->model->orderBy('name');
   }
 
   public function getByID($id)
@@ -36,7 +36,9 @@ class RoleRepository implements RoleRepositoryInterface
   public function update(Role $data)
   {
     $cols = [
+      'id' => $data->id,
       'name' => $data->name,
+      'updated_at' => 'now()',
     ];
 
     return $this->model->update($cols);

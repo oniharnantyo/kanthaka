@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Portal\AuthController;
 use App\Http\Controllers\Portal\DashboardController;
+use App\Http\Controllers\Portal\RoleController;
 use App\Http\Controllers\Portal\UserController;
 
 /*
@@ -40,6 +41,16 @@ Route::prefix('portal')->group(function () {
       Route::get('/{id}', [UserController::class, 'show'])->name('portal.users.detail');
       Route::post('/{id}', [UserController::class, 'update'])->name('portal.users.update');
       Route::delete('/{id}', [UserController::class, 'delete'])->name('portal.users.delete');
+    });
+
+    Route::prefix('roles')->group(function () {
+      Route::get('/', [RoleController::class, 'index'])->name('portal.roles.list');
+      Route::get('/datatables', [RoleController::class, 'datatables']);
+      Route::get('/create', [RoleController::class, 'create'])->name('portal.roles.create');
+      Route::post('/create', [RoleController::class, 'store'])->name('portal.roles.create.post');
+      Route::get('/{id}', [RoleController::class, 'show'])->name('portal.roles.detail');
+      Route::post('/{id}', [RoleController::class, 'update'])->name('portal.roles.update');
+      Route::delete('/{id}', [RoleController::class, 'delete'])->name('portal.roles.delete');
     });
   });
 });

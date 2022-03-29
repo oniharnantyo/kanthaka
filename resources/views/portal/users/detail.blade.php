@@ -1,8 +1,6 @@
 @extends('portal.layout.content')
 @section('title', 'Users')
 @section('style')
-{{ Log::debug($errors) }}
-{{Log::debug($errors->has('email'))}}
 
 @endsection
 @section('content')
