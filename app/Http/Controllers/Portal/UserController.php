@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Persistence\ModelHasRolesRepository;
 use App\Traits\RespondsWithHttpStatus;
+use Domain\ModelHasRoles\ModelHasRolesRepositoryInterface;
+use Domain\Role\RoleRepositoryInterface;
 use Domain\User\User;
 use Domain\User\UserRepositoryInterface;
 use Exception;
@@ -17,11 +20,16 @@ class UserController extends Controller
 {
   use RespondsWithHttpStatus;
 
-  protected $userRepo;
+  protected $userRepo, $roleRepo, $modelHasRolesRepo;
 
-  public function __construct(UserRepositoryInterface $userRepo)
-  {
+  public function __construct(
+    UserRepositoryInterface $userRepo,
+    RoleRepositoryInterface $roleRepo,
+    ModelHasRolesRepositoryInterface $modelHasRolesRepo,
+  ) {
     $this->userRepo = $userRepo;
+    $this->roleRepo = $roleRepo;
+    $this->modelHasRolesRepo = $modelHasRolesRepo;
   }
 
   private $data  = array(
@@ -45,8 +53,9 @@ class UserController extends Controller
 
   public function create()
   {
-    $data  = $this->data;
-    return view('portal.users.create', compact('data'));
+    $data = $this->data;
+    $roles = $this->roleRepo->fetchAll();
+    return view('portal.users.create', compact('data', 'roles'));
   }
 
   public function store(Request $request)
@@ -55,22 +64,22 @@ class UserController extends Controller
       'name' => 'required',
       'email' => 'required|email|unique:users,email',
       'password' => 'required|same:confirm-password',
+      'role' => 'required'
     ]);
 
     $input = $request->all();
 
     $user = new User();
-    $user->id = Str::uuid()->toString();
     $user->name = $input['name'];
     $user->email = $input['email'];
     $user->password = Hash::make($input['password']);
 
     $user = $this->userRepo->create($user);
+    $user->assignRole($request->input('role'));
 
     return redirect()->route('portal.users.list')
       ->with([
         'result' => 'User created successfully',
-        'user' => $user,
       ]);
   }
 
@@ -79,7 +88,9 @@ class UserController extends Controller
     $data  = $this->data;
 
     $user = $this->userRepo->getByID($id);
-    return view('portal.users.detail', compact('data', 'user'));
+    $roles = $this->roleRepo->fetchAll();
+    $userRoles = $this->modelHasRolesRepo->getByModelID($id);
+    return view('portal.users.detail', compact('data', 'user', 'roles', 'userRoles'));
   }
 
   public function update(Request $request, $id)
@@ -88,10 +99,10 @@ class UserController extends Controller
       'name' => 'required',
       'email' => 'required|email|unique:users,email,' . $id,
       'password' => 'same:confirm-password',
+      'role' => 'required'
     ]);
 
-    $user = new User();
-    $user->id = Uuid::fromString($id);;
+    $user = $this->userRepo->getByID($id);
     $user->name = $request->name;
     $user->email = $request->email;
 
@@ -99,7 +110,9 @@ class UserController extends Controller
       $user->password = Hash::make($request->password);
     }
 
-    $this->userRepo->update($user);
+    $user = $this->userRepo->update($user);
+    $this->modelHasRolesRepo->deleteByModelID($id);
+    $user->assignRole($request->input('role'));
 
     return redirect()->route('portal.users.detail', $id)
       ->with(['result' => 'User updated successfully']);

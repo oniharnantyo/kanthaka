@@ -31,6 +31,20 @@
             @endif
           </div>
           <div class="form-group">
+            <label class="form-label" for="role-input">roles</label>
+            <select class="form-control @if($errors->has('role')) is-invalid @endif" id="role-input" name="role"
+              placeholder="Enter roles">
+              @foreach ($roles as $role)
+              <option value="{{ $role['id']}}">{{ $role['name']}}</option>
+              @endforeach
+            </select>
+            @if ($errors->has('role'))
+            <div class="invalid-feedback">
+              {{ $errors->first('role') }}
+            </div>
+            @endif
+          </div>
+          <div class="form-group">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="update-password-checkbox">
               <label class="form-check-label" for="update-password-checkbox">
@@ -80,6 +94,16 @@
         }
       });
   });
+
+
+  var userRoles = {!! json_encode($userRoles) !!};
+  var selectedRole = [];
+  for( var key in userRoles ) {
+    var roleId = userRoles[key].role_id.toString()
+    selectedRole.push(roleId);
+  }
+  
+  $("#role-input").val(selectedRole)
 </script>
 
 @endsection
