@@ -7,6 +7,7 @@ use App\Http\Controllers\Portal\AuthController;
 use App\Http\Controllers\Portal\RoleController;
 use App\Http\Controllers\Portal\UserController;
 use App\Repositories\Persistence\BlogRepository;
+use App\Repositories\Persistence\ModelHasRolesRepository;
 use App\Repositories\Persistence\PermissionRepository;
 use App\Repositories\Persistence\RoleHasPermissionRepository;
 use App\Repositories\Persistence\RoleRepository;
@@ -38,7 +39,11 @@ class ControllerServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(UserController::class, function ($app) {
-            return new UserController(new UserRepository(new User()));
+            return new UserController(
+                new UserRepository(new User()),
+                new RoleRepository(new Role()),
+                new ModelHasRolesRepository(),
+            );
         });
 
         $this->app->bind(RoleController::class, function ($app) {

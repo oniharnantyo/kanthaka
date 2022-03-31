@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Repositories\Persistence\BlogRepository;
+use App\Repositories\Persistence\ModelHasRolesRepository;
 use App\Repositories\Persistence\PermissionRepository;
 use App\Repositories\Persistence\RoleHasPermissionRepository;
 use App\Repositories\Persistence\RoleRepository;
 use Domain\Blog\BlogRepositoryInterface;
+use Domain\ModelHasRoles\ModelHasRolesRepositoryInterface;
 use Domain\Role\PermissionRepositoryInterface;
 use Domain\Role\RoleRepositoryInterface;
 use Domain\RoleHasPermission\RoleHasPermissionRepositoryInterface;
@@ -26,6 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
         $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
         $this->app->bind(RoleHasPermissionRepositoryInterface::class, RoleHasPermissionRepository::class);
+        $this->app->bind(ModelHasRolesRepositoryInterface::class, ModelHasRolesRepository::class);
     }
 
     /**

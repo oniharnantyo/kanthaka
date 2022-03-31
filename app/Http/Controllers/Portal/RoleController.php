@@ -40,7 +40,7 @@ class RoleController extends Controller
 
   public function datatables(Request $request)
   {
-    return DataTables::of($this->roleRepo->fetchDatatables())
+    return DataTables::of($this->roleRepo->fetchAll())
       ->addIndexColumn()
       ->make(true);
   }

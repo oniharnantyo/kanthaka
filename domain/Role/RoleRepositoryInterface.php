@@ -6,7 +6,7 @@ use Spatie\Permission\Models\Role;
 
 interface RoleRepositoryInterface
 {
-  public function fetchDatatables();
+  public function fetchAll();
   public function getByID($id);
   public function create(Role $data);
   public function update(Role $data);

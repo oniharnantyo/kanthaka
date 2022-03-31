@@ -14,9 +14,9 @@ class RoleRepository implements RoleRepositoryInterface
     $this->model = $role;
   }
 
-  public function fetchDatatables()
+  public function fetchAll()
   {
-    return $this->model->orderBy('name');
+    return $this->model->get();
   }
 
   public function getByID($id)

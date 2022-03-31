@@ -51,7 +51,6 @@ class UserRepository implements UserRepositoryInterface
   public function create(User $data)
   {
     $cols = [
-      'id' => $data->id,
       'name' => $data->name,
       'email' => $data->email,
       'password' => $data->password,
@@ -59,7 +58,7 @@ class UserRepository implements UserRepositoryInterface
       'updated_at' => 'now()',
     ];
 
-    return DB::table('users')->insert($cols);
+    return $this->model->create($cols);
   }
 
   public function update(User $data)
@@ -74,7 +73,9 @@ class UserRepository implements UserRepositoryInterface
       $cols['password'] = $data->password;
     }
 
-    return DB::table('users')->whereId($data->id)->update($cols);
+    $this->model->whereId($data->id)->update($cols);
+
+    return $this->model->find($data->id);
   }
 
   public function delete($id)

@@ -32,6 +32,20 @@
             @endif
           </div>
           <div class="form-group">
+            <label class="form-label" for="role-input">roles</label>
+            <select class="form-control @if($errors->has('role')) is-invalid @endif" id="role-input" name="role"
+              placeholder="Enter roles">
+              @foreach ($roles as $role)
+              <option value="{{ $role['id']}}">{{ $role['name']}}</option>
+              @endforeach
+            </select>
+            @if ($errors->has('role'))
+            <div class="invalid-feedback">
+              {{ $errors->first('role') }}
+            </div>
+            @endif
+          </div>
+          <div class="form-group">
             <label class="form-label" for="password-input">Password</label>
             <input type="password" class="form-control @if ($errors->has('password'))
             is-invalid @endif" id="password-input" name="password" placeholder="Enter password">
