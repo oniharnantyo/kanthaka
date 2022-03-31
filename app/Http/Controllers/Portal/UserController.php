@@ -30,6 +30,11 @@ class UserController extends Controller
     $this->userRepo = $userRepo;
     $this->roleRepo = $roleRepo;
     $this->modelHasRolesRepo = $modelHasRolesRepo;
+
+    $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index', 'show']]);
+    $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
+    $this->middleware('permission:user-edit', ['only' => ['show', 'update']]);
+    $this->middleware('permission:user-delete', ['only' => ['delete']]);
   }
 
   private $data  = array(
@@ -122,7 +127,7 @@ class UserController extends Controller
   {
     $this->userRepo->delete($id);
     return response()->json([
-      'success' => 'Record deleted successfully!'
+      'success' => 'User deleted successfully!'
     ]);
   }
 }

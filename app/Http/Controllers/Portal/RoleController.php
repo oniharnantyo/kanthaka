@@ -23,6 +23,11 @@ class RoleController extends Controller
     $this->roleRepo = $roleRepo;
     $this->permissionRepo = $permissionRepo;
     $this->roleHasPermissionRepo = $roleHasPermissionRepo;
+
+    $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index', 'show']]);
+    $this->middleware('permission:role-create', ['only' => ['create', 'store']]);
+    $this->middleware('permission:role-edit', ['only' => ['show', 'update']]);
+    $this->middleware('permission:role-delete', ['only' => ['delete']]);
   }
 
 
@@ -104,7 +109,7 @@ class RoleController extends Controller
   {
     $this->roleRepo->delete($id);
     return response()->json([
-      'success' => 'Record deleted successfully!'
+      'success' => 'Role deleted successfully!'
     ]);
   }
 }
