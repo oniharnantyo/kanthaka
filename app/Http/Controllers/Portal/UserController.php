@@ -3,18 +3,14 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Persistence\ModelHasRolesRepository;
 use App\Traits\RespondsWithHttpStatus;
 use Domain\ModelHasRoles\ModelHasRolesRepositoryInterface;
 use Domain\Role\RoleRepositoryInterface;
 use Domain\User\User;
 use Domain\User\UserRepositoryInterface;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Ramsey\Uuid\Uuid;
 use Yajra\DataTables\Datatables;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {

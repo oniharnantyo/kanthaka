@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Domain\Blog\BlogRepositoryInterface;
 
 class HomeController extends Controller
@@ -16,7 +17,7 @@ class HomeController extends Controller
 
   public function index()
   {
-    $blogs = $this->blogRepository->FindAll();
+    $blogs = $this->blogRepository->fetchCursor(6, new DateTime(), '');
     foreach ($blogs as $blog) {
       $blog->content = htmlspecialchars_decode($blog->content);
     }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Portal\AuthController;
+use App\Http\Controllers\Portal\BlogController;
 use App\Http\Controllers\Portal\DashboardController;
 use App\Http\Controllers\Portal\RoleController;
 use App\Http\Controllers\Portal\UserController;
@@ -51,6 +52,16 @@ Route::prefix('portal')->group(function () {
       Route::get('/{id}', [RoleController::class, 'show'])->name('portal.roles.detail');
       Route::post('/{id}', [RoleController::class, 'update'])->name('portal.roles.update');
       Route::delete('/{id}', [RoleController::class, 'delete'])->name('portal.roles.delete');
+    });
+
+    Route::prefix('blogs')->group(function () {
+      Route::get('/', [BlogController::class, 'index'])->name('portal.blogs.list');
+      Route::get('/datatables', [BlogController::class, 'datatables']);
+      Route::get('/create', [BlogController::class, 'create'])->name('portal.blogs.create');
+      Route::post('/create', [BlogController::class, 'store'])->name('portal.blogs.create.post');
+      Route::get('/{id}', [BlogController::class, 'show'])->name('portal.blogs.detail');
+      Route::post('/{id}', [BlogController::class, 'update'])->name('portal.blogs.update');
+      Route::delete('/{id}', [BlogController::class, 'delete'])->name('portal.blogs.delete');
     });
   });
 });
