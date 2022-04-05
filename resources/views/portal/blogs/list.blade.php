@@ -55,7 +55,7 @@
           { data: 'created_at' },
           { data: 'id' },
           { data: 'title' },
-          { data: 'users.name'},
+          { data: 'name'},
           { data: 'action' },
         ],
         columnDefs: [

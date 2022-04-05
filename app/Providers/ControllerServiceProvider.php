@@ -4,7 +4,12 @@ namespace App\Providers;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Portal\AuthController;
+use App\Http\Controllers\Portal\BlogController;
+use App\Http\Controllers\Portal\DeleteImageController;
+use App\Http\Controllers\Portal\DeleteImageControllerInterface;
 use App\Http\Controllers\Portal\RoleController;
+use App\Http\Controllers\Portal\UploadImageController;
+use App\Http\Controllers\Portal\UploadImageControllerInterface;
 use App\Http\Controllers\Portal\UserController;
 use App\Repositories\Persistence\BlogRepository;
 use App\Repositories\Persistence\ModelHasRolesRepository;
@@ -34,6 +39,9 @@ class ControllerServiceProvider extends ServiceProvider
 
 
         // Portal
+        $this->app->bind(UploadImageControllerInterface::class, UploadImageController::class);
+        $this->app->bind(DeleteImageControllerInterface::class, DeleteImageController::class);
+
         $this->app->bind(AuthController::class, function ($app) {
             return new AuthController(new UserRepository(new User()));
         });
@@ -51,6 +59,14 @@ class ControllerServiceProvider extends ServiceProvider
                 new RoleRepository(new Role()),
                 new PermissionRepository(new Permission()),
                 new RoleHasPermissionRepository()
+            );
+        });
+
+        $this->app->bind(BlogController::class, function ($app) {
+            return new BlogController(
+                new BlogRepository(new Blog()),
+                new UploadImageController(),
+                new DeleteImageController(),
             );
         });
     }

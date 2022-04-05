@@ -182,6 +182,8 @@ return [
 
         Spatie\Permission\PermissionServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+
+        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -197,6 +199,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),
 
 ];

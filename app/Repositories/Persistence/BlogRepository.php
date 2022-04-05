@@ -4,6 +4,7 @@ namespace App\Repositories\Persistence;
 
 use Domain\Blog\Blog;
 use Domain\Blog\BlogRepositoryInterface;
+use Ramsey\Uuid\Uuid;
 
 class BlogRepository implements BlogRepositoryInterface
 {
@@ -16,8 +17,9 @@ class BlogRepository implements BlogRepositoryInterface
 
   public function fetchDatatables()
   {
-    return $this->model->join('users', 'users.id', '=', 'blogs.author_id')
-      ->orderBy('blogs.created_at');
+    return $this->model->select('blogs.id', 'blogs.title', 'blogs.slug', 'users.name', 'blogs.created_at', 'blogs.updated_at')
+      ->join('users', 'users.id', '=', 'blogs.author_id')
+      ->orderBy('blogs.title');
   }
 
   public function fetch($limit, $offset, $search)
@@ -59,6 +61,7 @@ class BlogRepository implements BlogRepositoryInterface
   public function create(Blog $data)
   {
     $cols = [
+      'id' => $data->id,
       'author_id' => $data->author_id,
       'title' => $data->title,
       'thumbnail' => $data->thumbnail,
