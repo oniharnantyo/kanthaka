@@ -14,6 +14,7 @@ class DeleteImageController extends Controller implements DeleteImageControllerI
 {
   public function Do($fileName)
   {
-    return Storage::disk('local')->delete('public/images/' . $fileName);
+    $imagePath = 'public/images/' . $fileName;
+    return Storage::disk('local')->delete($imagePath);
   }
 }

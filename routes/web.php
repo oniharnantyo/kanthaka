@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Portal\AuthController;
 use App\Http\Controllers\Portal\BlogController;
 use App\Http\Controllers\Portal\DashboardController;
+use App\Http\Controllers\Portal\EditorController;
 use App\Http\Controllers\Portal\RoleController;
 use App\Http\Controllers\Portal\UserController;
 
@@ -62,6 +63,10 @@ Route::prefix('portal')->group(function () {
       Route::get('/{id}', [BlogController::class, 'show'])->name('portal.blogs.detail');
       Route::post('/{id}', [BlogController::class, 'update'])->name('portal.blogs.update');
       Route::delete('/{id}', [BlogController::class, 'delete'])->name('portal.blogs.delete');
+    });
+
+    Route::prefix('editor')->group(function () {
+      Route::post('/upload', [EditorController::class, 'uploadImage'])->name('portal.editor.upload');
     });
   });
 });

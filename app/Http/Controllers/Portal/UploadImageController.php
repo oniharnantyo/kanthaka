@@ -16,12 +16,18 @@ class UploadImageController extends Controller implements UploadImageControllerI
 {
   public function Do(Request $request, $prefix)
   {
-    $image      = $request->file('image');
-    $fileName   = $prefix . time() . '.' . $image->getClientOriginalExtension();
+    if ($request->hasFile('upload')) {
+      $image = $request->file('upload');
+    } else {
+      $image = $request->file('image');
+    }
+
+    $fileName = $prefix . time() . '.' . $image->getClientOriginalExtension();
 
     $img = Image::make($image)->encode();
     $img->stream();
-    Storage::disk('local')->put('public/images/' . $fileName, $img, 'public');
+    $imagePath = 'public/images/' . $fileName;
+    Storage::disk('local')->put($imagePath, $img, 'public');
 
     return $fileName;
   }

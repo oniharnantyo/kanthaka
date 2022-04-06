@@ -50,7 +50,7 @@
 </div>
 @endsection
 @section('script')
-<script src="https://cdn.ckeditor.com/ckeditor5/33.0.0/classic/ckeditor.js"></script>
+<script src="{{ asset('js/ckeditor.js') }}"></script>
 <script>
   $(document).ready(function() {
     function readURL(input) {
@@ -77,9 +77,17 @@
     });
   });
 
+  var token = $("input[name='_token']").attr("value");
   ClassicEditor
-    .create(document.querySelector( '#content-input' ))
-    .catch( error => {
+    .create(document.querySelector( '#content-input' ), {
+      simpleUpload: {
+        uploadUrl: '/portal/editor/upload',
+        withCredentials: true,
+        headers: {
+          'X-CSRF-TOKEN': token,
+        }
+      }
+    }).catch( error => {
       console.error( error );
     });
 
