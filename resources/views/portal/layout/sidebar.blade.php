@@ -1,5 +1,3 @@
-{{ $role = Auth::user()->roles->pluck('name')[0] }}
-
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
         <div class="sidebar-brand-text mx-3">Vidyasena</div>
