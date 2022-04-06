@@ -1,3 +1,5 @@
+{{ $role = Auth::user()->roles->pluck('name')[0] }}
+
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
         <div class="sidebar-brand-text mx-3">Vidyasena</div>
@@ -9,29 +11,37 @@
             <span>Dashboard</span></a>
     </li>
     <hr class="sidebar-divider">
+    @if ($role == 'admin' || $role == 'editor')
     <li class="nav-item {{ $data['page']  == 'blogs' ? 'active' : '' }}">
         <a class="nav-link" href="/portal/blogs">
             <i class="fas fa-blog"></i>
-            <span>Blog</span></a>
+            <span>Blogs</span></a>
     </li>
+    @endif
 
+    @if ($role == 'admin')
     <li class="nav-item {{ $data['page']  == 'banners' ? 'active' : '' }}">
         <a class="nav-link" href="/portal/banners">
             <i class="fas fa-bullhorn"></i>
-            <span>Banner</span></a>
+            <span>Banners</span></a>
     </li>
+    @endif
 
+    @if ($role == 'admin')
     <li class="nav-item {{ $data['page']  == 'users' ? 'active' : '' }}">
         <a class="nav-link" href="/portal/users">
             <i class="fas fa-users"></i>
             <span>Users</span></a>
     </li>
+    @endif
 
+    @if ($role == 'admin')
     <li class="nav-item {{ $data['page']  == 'roles' ? 'active' : '' }}">
         <a class="nav-link" href="/portal/roles">
             <i class="fas fa-tasks"></i>
             <span>Roles</span></a>
     </li>
+    @endif
 
     <hr class="sidebar-divider d-none d-md-block">
     <div class="text-center d-none d-md-inline">

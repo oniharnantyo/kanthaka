@@ -38,14 +38,14 @@ return [
     */
 
     'guards' => [
+        'portal' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'portal' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ]
     ],
 
     /*
