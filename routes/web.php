@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Portal\AuthController;
-use App\Http\Controllers\Portal\BlogController;
+use App\Http\Controllers\Portal\BlogController as PortalBlogController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Portal\DashboardController;
 use App\Http\Controllers\Portal\EditorController;
 use App\Http\Controllers\Portal\RoleController;
@@ -21,7 +22,9 @@ use App\Http\Controllers\Portal\UserController;
 */
 
 Route::get('/', [HomeController::class, 'index']);
-
+Route::prefix('blog')->group(function () {
+  Route::get("/", [BlogController::class, 'index']);
+});
 
 Route::prefix('portal')->group(function () {
   Route::get('/', function () {
@@ -56,13 +59,13 @@ Route::prefix('portal')->group(function () {
     });
 
     Route::prefix('blogs')->group(function () {
-      Route::get('/', [BlogController::class, 'index'])->name('portal.blogs.list');
-      Route::get('/datatables', [BlogController::class, 'datatables']);
-      Route::get('/create', [BlogController::class, 'create'])->name('portal.blogs.create');
-      Route::post('/create', [BlogController::class, 'store'])->name('portal.blogs.create.post');
-      Route::get('/{id}', [BlogController::class, 'show'])->name('portal.blogs.detail');
-      Route::post('/{id}', [BlogController::class, 'update'])->name('portal.blogs.update');
-      Route::delete('/{id}', [BlogController::class, 'delete'])->name('portal.blogs.delete');
+      Route::get('/', [PortalBlogController::class, 'index'])->name('portal.blogs.list');
+      Route::get('/datatables', [PortalBlogController::class, 'datatables']);
+      Route::get('/create', [PortalBlogController::class, 'create'])->name('portal.blogs.create');
+      Route::post('/create', [PortalBlogController::class, 'store'])->name('portal.blogs.create.post');
+      Route::get('/{id}', [PortalBlogController::class, 'show'])->name('portal.blogs.detail');
+      Route::post('/{id}', [PortalBlogController::class, 'update'])->name('portal.blogs.update');
+      Route::delete('/{id}', [PortalBlogController::class, 'delete'])->name('portal.blogs.delete');
     });
 
     Route::prefix('editor')->group(function () {

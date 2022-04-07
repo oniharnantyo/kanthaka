@@ -38,12 +38,13 @@ class BlogRepository implements BlogRepositoryInterface
     return $res;
   }
 
-  public function fetchCursor($limit, $cursor, $search)
+  public function fetchCursor($limit, $search)
   {
     $res = $this->model
-      ->where('created_at', '<', $cursor)
+      ->select('blogs.id', 'blogs.title', 'blogs.slug', 'blogs.description', 'blogs.thumbnail', 'users.name', 'blogs.created_at', 'blogs.updated_at')
+      ->join('users', 'users.id', '=', 'blogs.author_id')
       ->orderBy('created_at', 'DESC')
-      ->limit($limit);
+      ->paginate($limit);
 
     if ($search !== '') {
       $search = '%' . trim($search) . '%';
