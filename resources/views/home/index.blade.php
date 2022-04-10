@@ -178,19 +178,62 @@
       </div>
     </div>
 
-    <div class="row" data-aos="fade-up">
-      @foreach($blogs as $blog)
-      <div class="col-md-6 col-lg-4 mb-4 mb-lg-4 px-2">
-        <div class="card border-light no-border">
-          <img src={{$blog->thumbnail}} alt="thumbnail" class="card-img-top d-block mx-auto mb-3" style="height: 200px;
-          max-width: 300px">
-          <h5 class="card-title"><a href="/blog/{{$blog->slug}}">{{$blog->title}}</a></h5>
-          <div class="card-subtitle text-muted">{{$blog->created_at}}</div>
-          <p class="card-text px-2">{!!Str::limit($blog->content, 200)!!}</p>
-        </div>
-      </div>
-      @endforeach
-    </div>
+    <div id="blog-list" class="row mb-1 mb-lg-2" data-aos="fade-up"></div>
+    <div class="row justify-content-end"><a href="blog" class="font-weight-bold">Lihat selengkapnya >>></a></div>
   </div>
 </div>
+@endsection
+
+@section('script')
+<script src={{ asset("js/moment.min.js") }}></script>
+<script>
+  loadData(1);
+  
+  function loadData(page) {
+    $.ajax({
+      url: '/blog?page=' + page,
+      type: 'GET',
+      success: function(response) {        
+        console.log(response);
+        var html = '';
+        for (const blog of response.data) { 
+          var thumbnail = `${ "{{ asset('storage/images/') }}" +`/`+ blog.thumbnail }`;
+          var slug = blog.slug;
+          var title = blog.title;
+          var createdAt = moment(blog.created_at).local().format('YYYY-MM-DD');
+          var description = blog.description;
+          var authorName = blog.name;
+
+          html +=`
+            <div class="col-md-6 col-lg-4 mb-8 mb-lg-8">
+              <div class="card border-light no-border">
+                <img src="`+thumbnail+`" alt="thumbnail" class="card-img-top d-block mx-auto mb-3 card-image">
+                <h5 class="card-title"><a href="/blog/`+slug+`" class="font-weight-bold">`+title+`</a></h5>
+                <p class="card-text">`+description+`</p>
+                <div class="row no-gutters">
+                  <div class="col-12 mb-5 mb-lg-5">
+                    <div class="row align-items-center">
+                      <div class="col-2">
+                        <i class="fas fa-user-circle" style="font-size:40px"></i>
+                      </div>
+                      <div class="col-10">
+                        <div class="row">
+                          <div class='font-weight-bold'>`+authorName+`</div>
+                        </div>
+                        <div class="row">
+                          <div class="text-muted">`+createdAt+`</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>  
+                </div>
+              </div>
+            </div>
+            `;
+        }
+        $('#blog-list').html(html);
+      }
+    });
+  }
+</script>
 @endsection
